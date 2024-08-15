@@ -58,7 +58,7 @@ public class AuthController {
     @Transactional
     public ResponsePackage index() throws JsonProcessingException {
         List<User> users = this.userService.getAllUsers();
-        return new ResponsePackage(true, users, "get user success !", null);
+        return new ResponsePackage(true, users, "Get all user success !", null);
     }
 
     @PostMapping("/register")
