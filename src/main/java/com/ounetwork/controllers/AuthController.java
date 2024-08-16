@@ -105,7 +105,11 @@ public class AuthController {
 
         try {
             User user = userService.login(studentID, password);
-            String token = jwtUtil.generateToken(studentID);
+            String role = user.getRole().getName();
+            
+            String token = jwtUtil.generateToken(studentID, role);
+            String username = jwtUtil.extractUsername(token);
+            String roleName = jwtUtil.extractRole(token);
             
             
             Map<String, String> loginResponse = new HashMap<>();

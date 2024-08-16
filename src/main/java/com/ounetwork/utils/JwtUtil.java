@@ -20,25 +20,25 @@ import org.springframework.stereotype.Component;
  *
  * @author Admin
  */
-
 @Component
 @PropertySource("classpath:jsonwebtoken.properties")
 public class JwtUtil {
+
     @Autowired
     private Environment env;
     private String SECRET_KEY;
-    
+
     @PostConstruct
     public void init() {
         this.SECRET_KEY = env.getProperty("jwt.secretKey");
     }
-    
-    
-    public String generateToken(String username) {
+
+    public String generateToken(String username, String role) {
         Map<String, Object> claims = new HashMap<>();
+        claims.put("role", role); // Add role to claims
         return createToken(claims, username);
     }
-    
+
     private String createToken(Map<String, Object> claims, String subject) {
         return Jwts.builder()
                 .setClaims(claims)
@@ -48,20 +48,25 @@ public class JwtUtil {
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
                 .compact();
     }
-    
+
     public boolean validateToken(String token, String username) {
         final String extractedUsername = extractUsername(token);
         return (extractedUsername.equals(username) && !isTokenExpired(token));
     }
-    
+
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
     }
-    
+
+    public String extractRole(String token) {
+        Claims claims = extractAllClaims(token);
+        return (String) claims.get("role"); // Đảm bảo rằng "role" là key chính xác trong claims
+    }
+
     private boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
     }
-    
+
     private Date extractExpiration(String token) {
         return extractClaim(token, Claims::getExpiration);
     }

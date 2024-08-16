@@ -91,15 +91,13 @@
         <!-- Spring security -->
         <dependency>
             <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-core</artifactId>
-            <version>6.3.1</version>
+            <artifactId>spring-security-web</artifactId>
+            <version>5.2.3.RELEASE</version>
         </dependency>
-        
-        <!-- Spring security web -->
         <dependency>
             <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-web</artifactId>
-            <version>6.3.1</version>
+            <artifactId>spring-security-config</artifactId>
+            <version>5.2.3.RELEASE</version>
         </dependency>
         
         <!-- Hibernate validator -->

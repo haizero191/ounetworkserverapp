@@ -17,6 +17,7 @@ com\ounetwork\configs\HibernateConfig.class
 com\ounetwork\services\Impl\CloudinaryServiceImpl.class
 com\ounetwork\services\Impl\UserServiceImpl.class
 com\ounetwork\ounetworksv\resources\JakartaEE8Resource.class
+com\ounetwork\filter\JwtRequestFilter.class
 com\ounetwork\configs\SecurityConfig.class
 com\ounetwork\validation\annotation\UniqueField.class
 com\ounetwork\configs\JacksonConfig.class
