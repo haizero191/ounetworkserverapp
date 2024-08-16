@@ -25,6 +25,7 @@ D:\Github\ounetworkserverapp\src\main\java\com\ounetwork\services\ValidationServ
 D:\Github\ounetworkserverapp\src\main\java\com\ounetwork\ounetworksv\JakartaRestConfiguration.java
 D:\Github\ounetworkserverapp\src\main\java\com\ounetwork\repositories\Impl\ValidationRepositoryImpl.java
 D:\Github\ounetworkserverapp\src\main\java\com\ounetwork\services\Impl\RoleServiceImpl.java
+D:\Github\ounetworkserverapp\src\main\java\com\ounetwork\configs\SecurityInit.java
 D:\Github\ounetworkserverapp\src\main\java\com\ounetwork\utils\JwtUtil.java
 D:\Github\ounetworkserverapp\src\main\java\com\ounetwork\models\Role.java
 D:\Github\ounetworkserverapp\src\main\java\com\ounetwork\services\Impl\CloudinaryServiceImpl.java

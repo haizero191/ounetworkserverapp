@@ -24,6 +24,7 @@ import java.util.Map;
 import javax.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -39,7 +40,7 @@ import org.springframework.web.multipart.MultipartFile;
  * @author Admin
  */
 @RestController
-@RequestMapping("/api/v1/auth")
+@RequestMapping("/api/v1/public/auth")
 public class AuthController {
 
     @Autowired
@@ -53,7 +54,7 @@ public class AuthController {
 
     @Autowired
     private JwtUtil jwtUtil;
-
+    
     @GetMapping("/test")
     @Transactional
     public ResponsePackage index() throws JsonProcessingException {
@@ -106,8 +107,9 @@ public class AuthController {
         try {
             User user = userService.login(studentID, password);
             String role = user.getRole().getName();
+            boolean isApproved = user.getIsApproved();
             
-            String token = jwtUtil.generateToken(studentID, role);
+            String token = jwtUtil.generateToken(studentID, role, isApproved);
             String username = jwtUtil.extractUsername(token);
             String roleName = jwtUtil.extractRole(token);
             

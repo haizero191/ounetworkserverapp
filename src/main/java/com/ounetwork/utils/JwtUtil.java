@@ -33,9 +33,10 @@ public class JwtUtil {
         this.SECRET_KEY = env.getProperty("jwt.secretKey");
     }
 
-    public String generateToken(String username, String role) {
+    public String generateToken(String username, String role, boolean isApproved) {
         Map<String, Object> claims = new HashMap<>();
-        claims.put("role", role); // Add role to claims
+        claims.put("role", role);                   // Add role to claims
+        claims.put("isApproved", isApproved);       // Add isApproved to claims
         return createToken(claims, username);
     }
 
@@ -61,6 +62,11 @@ public class JwtUtil {
     public String extractRole(String token) {
         Claims claims = extractAllClaims(token);
         return (String) claims.get("role"); // Đảm bảo rằng "role" là key chính xác trong claims
+    }
+    
+    public boolean extractIsApproved(String token) {
+        Claims claims = extractAllClaims(token);
+        return (boolean) claims.get("isApproved"); 
     }
 
     private boolean isTokenExpired(String token) {

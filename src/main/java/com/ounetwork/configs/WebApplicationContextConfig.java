@@ -32,7 +32,8 @@ import org.springframework.web.servlet.view.JstlView;
     "com.ounetwork.services", 
     "com.ounetwork.validation", 
     "com.ounetwork.models",
-    "com.ounetwork.utils"
+    "com.ounetwork.utils",
+    "com.ounetwork.filter"
 })
 public class WebApplicationContextConfig implements WebMvcConfigurer {
 

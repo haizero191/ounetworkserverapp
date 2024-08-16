@@ -27,6 +27,7 @@ com\ounetwork\validation\validator\UniqueFieldValidator.class
 com\ounetwork\utils\JwtUtil.class
 com\ounetwork\repositories\RoleRepository.class
 com\ounetwork\services\Impl\RoleServiceImpl.class
+com\ounetwork\configs\SecurityInit.class
 com\ounetwork\controllers\TestController.class
 com\ounetwork\validation\CustomException.class
 com\ounetwork\controllers\UploadController.class

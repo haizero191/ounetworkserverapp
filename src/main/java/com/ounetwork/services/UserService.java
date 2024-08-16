@@ -6,12 +6,13 @@ package com.ounetwork.services;
 
 import com.ounetwork.models.User;
 import java.util.List;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
 /**
  *
  * @author Admin
  */
-public interface UserService {
+public interface UserService extends UserDetailsService{
 
     List<User> getAllUsers();
 
@@ -20,5 +21,9 @@ public interface UserService {
     User login(String studentID, String password);
 
     User updateAvatar(String userId, String avatarUrl);
+    
+    User getUserByStudentID(String studentId);
+    
+    
 
 }
