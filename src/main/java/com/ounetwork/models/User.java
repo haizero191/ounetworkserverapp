@@ -21,6 +21,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
+
 import javax.validation.constraints.Size;
 
 import lombok.Data;
@@ -46,18 +47,17 @@ public class User implements Serializable {
     @Column(name = "id")
     private String id;
 
+    @NotBlank(message = "Student ID must be required")
+    @Numberic(message = "The student ID must be numeric")
+    @Size(min = 10, max = 10, message = "Student ID must have 10 characters as digits")
+    @Column(name = "studentID")
+    private String studentID;
+
     @NotBlank(message = "Email must be required")
     @Email(message = "Email isn't valid")
     @Column(name = "email")
     private String email;
 
-    @NotBlank(message = "Student ID must be required")
-    @Numberic(message = "The student ID must be numeric")
-    @Size(min = 10, max = 10, message = "Student ID must have 10 characters as digits")
-    @Column(name = "studentID")
-    //@UniqueField(table = "User", field = "studentID", message = "Student ID number has been registered and waiting for verification")
-    private String studentID;
-    
     @ManyToOne
     @JoinColumn(name = "roleId")
     private Role role;
