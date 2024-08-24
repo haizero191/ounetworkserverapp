@@ -5,22 +5,24 @@
 package com.ounetwork.models;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonView;
 import com.ounetwork.validation.annotation.Numberic;
-import com.ounetwork.validation.annotation.UniqueField;
+import com.ounetwork.views.View;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-
 
 import javax.validation.constraints.Size;
 
@@ -29,6 +31,8 @@ import lombok.Getter;
 
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
+import java.util.Set;
+import javax.persistence.CascadeType;
 
 /**
  *
@@ -45,22 +49,30 @@ public class User implements Serializable {
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "uuid2")
     @Column(name = "id")
+    @JsonView(View.Summary.class)
     private String id;
 
     @NotBlank(message = "Student ID must be required")
     @Numberic(message = "The student ID must be numeric")
     @Size(min = 10, max = 10, message = "Student ID must have 10 characters as digits")
     @Column(name = "studentID")
+    @JsonView(View.Summary.class)
     private String studentID;
 
     @NotBlank(message = "Email must be required")
     @Email(message = "Email isn't valid")
     @Column(name = "email")
+    @JsonView(View.Summary.class)
     private String email;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "roleId")
     private Role role;
+    
+    @JsonView(View.Detailed.class)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "profileId")
+    private Profile profile;
 
     @NotBlank(message = "Password must be required")
     @Column(name = "password")
@@ -68,9 +80,6 @@ public class User implements Serializable {
 
     @Column(name = "isApproved")
     private Boolean isApproved = false;
-
-    @Column(name = "avatar")
-    private String avatar;
 
     @Column(name = "createdAt")
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")

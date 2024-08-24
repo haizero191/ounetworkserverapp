@@ -6,12 +6,10 @@ package com.ounetwork.validation.validator;
 
 import com.ounetwork.services.ValidationService;
 import com.ounetwork.validation.annotation.UniqueField;
-import javax.transaction.Transactional;
+
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
-import org.hibernate.Session;
 
-import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.stereotype.Component;

@@ -16,14 +16,21 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ounetwork.models.User;
+import java.util.ArrayList;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author Admin
  */
 @RestController
-@RequestMapping("/api/v1/upload")
+@RequestMapping("/api/v1/private/upload")
 public class UploadController {
+
+    private static final Logger logger = LoggerFactory.getLogger(UploadController.class);
 
     @Autowired
     private UserService userService;
@@ -31,19 +38,21 @@ public class UploadController {
     @Autowired
     private CloudinaryService cloudinaryService;
 
-    @PostMapping(value = "/upload-avatar/{userId}", consumes = "multipart/form-data")
-    public ResponsePackage uploadAvatar(@PathVariable String userId, @RequestParam("avatar") MultipartFile avatar) {
-        if (avatar.isEmpty()) {
-            return new ResponsePackage(false, null, "No file uploaded", null);
+    @PostMapping(value = "/files/{userId}", consumes = "multipart/form-data")
+    public ResponseEntity uploadFiles(@RequestParam("files") MultipartFile[] files) {
+        Object uploadedFileUrls = new ArrayList<>();
+        
+        // If not files in form response return 
+        if (files.length == 0) {
+            return new ResponseEntity(new ResponsePackage(false, null, "No file uploaded", null), HttpStatus.BAD_REQUEST);
         }
+
+        // Handle upload mutilple file from response
         try {
-            // Upload avatar to Cloudinary
-            String avatarUrl = cloudinaryService.uploadFile(avatar);
-            // Update user avatar URL
-            User user = userService.updateAvatar(userId, avatarUrl);
-            return new ResponsePackage(true, avatarUrl, "Avatar uploaded successfully!", null);
+            uploadedFileUrls = this.cloudinaryService.uploadMutilFiles(files);
+            return new ResponseEntity(new ResponsePackage(true, uploadedFileUrls, "Upload your files success", null), HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponsePackage(false, null, "Failed to upload avatar: " + e.getMessage(), null);
+            return new ResponseEntity(new ResponsePackage(false, null, "Upload your files failed", null), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

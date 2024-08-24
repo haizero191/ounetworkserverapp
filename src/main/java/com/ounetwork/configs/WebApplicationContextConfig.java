@@ -4,13 +4,14 @@
  */
 package com.ounetwork.configs;
 
+import java.nio.charset.StandardCharsets;
+import java.util.List;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
-
-
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -27,10 +28,10 @@ import org.springframework.web.servlet.view.JstlView;
 @EnableWebMvc
 @EnableTransactionManagement
 @ComponentScan(basePackages = {
-    "com.ounetwork.controllers", 
-    "com.ounetwork.repositories", 
-    "com.ounetwork.services", 
-    "com.ounetwork.validation", 
+    "com.ounetwork.controllers",
+    "com.ounetwork.repositories",
+    "com.ounetwork.services",
+    "com.ounetwork.validation",
     "com.ounetwork.models",
     "com.ounetwork.utils",
     "com.ounetwork.filter"
@@ -60,7 +61,7 @@ public class WebApplicationContextConfig implements WebMvcConfigurer {
         registry.addResourceHandler("/resources/**")
                 .addResourceLocations("/resources/");
     }
-    
+
     // Cấu hình File upload
     @Bean
     public CommonsMultipartResolver multipartResolver() {
@@ -68,8 +69,17 @@ public class WebApplicationContextConfig implements WebMvcConfigurer {
         multipartResolver.setMaxUploadSize(104857600); // 100 MB
         multipartResolver.setMaxUploadSizePerFile(104857600); // 100 MB
         multipartResolver.setMaxInMemorySize(104857600); // 100 MB
+        multipartResolver.setDefaultEncoding("UTF-8");
         return multipartResolver;
     }
-    
-    
+
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/api/*")
+                .allowedOrigins("http://localhost:3000") // Cho phép domain này
+                .allowedMethods("GET", "POST", "PUT", "DELETE") // Các phương thức HTTP cho phép
+                .allowedHeaders("*") // Các headers cho phép
+                .allowCredentials(true); // Cho phép cookie
+    }
+
 }

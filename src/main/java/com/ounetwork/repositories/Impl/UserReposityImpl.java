@@ -4,6 +4,7 @@
  */
 package com.ounetwork.repositories.Impl;
 
+import com.ounetwork.models.Profile;
 import com.ounetwork.models.User;
 import com.ounetwork.repositories.UserRepository;
 import java.util.List;
@@ -12,6 +13,7 @@ import org.hibernate.Session;
 import org.hibernate.query.Query;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -39,16 +41,12 @@ public class UserReposityImpl implements UserRepository {
         return user;
     }
 
-
- 
-
     // Update avatar for user 
     @Override
     public User updateAvatar(String userId, String avatarUrl) {
         Session session = sessionFactory.getObject().getCurrentSession();
         User user = session.get(User.class, userId);
         if (user != null) {
-            user.setAvatar(avatarUrl);
             session.update(user);
             return user;
         } else {
@@ -63,17 +61,20 @@ public class UserReposityImpl implements UserRepository {
         return session.get(User.class, userId);
     }
 
+    //Find user by student id
     @Override
     public User findByStudentID(String studentID) {
         Session session = sessionFactory.getObject().getCurrentSession();
         String hql = "FROM User WHERE studentID = :studentID ";
         return session.createQuery(hql, User.class)
-                      .setParameter("studentID", studentID)
-                      .uniqueResult();
+                .setParameter("studentID", studentID)
+                .uniqueResult();
     }
 
-   
-
-  
-
+    // Update user profile
+    @Override
+    public User updateProfile(Profile profile) {
+        Session session = sessionFactory.getObject().getCurrentSession();
+        throw new UnsupportedOperationException("Not supported yet."); 
+    }
 }

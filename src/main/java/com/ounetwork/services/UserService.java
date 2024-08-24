@@ -24,6 +24,6 @@ public interface UserService extends UserDetailsService{
     
     User getUserByStudentID(String studentId);
     
+    User getUserById(String id);
     
-
 }

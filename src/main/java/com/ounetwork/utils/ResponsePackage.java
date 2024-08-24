@@ -4,6 +4,8 @@
  */
 package com.ounetwork.utils;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import com.ounetwork.views.View;
 import java.util.List;
 import java.util.Map;
 import lombok.AllArgsConstructor;
@@ -18,9 +20,18 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ResponsePackage {
-
+    @JsonView(View.Detailed.class)
     private boolean success;
+    
+    
+    @JsonView(View.Detailed.class)
     private Object data;
+    
+    
+    @JsonView(View.Detailed.class)
     private String message;
+    
+    
+    @JsonView(View.Summary.class)
     private Map<String, String> errors;
 }

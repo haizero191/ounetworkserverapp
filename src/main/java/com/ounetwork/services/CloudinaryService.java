@@ -5,6 +5,8 @@
 package com.ounetwork.services;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -12,5 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
  * @author Admin
  */
 public interface CloudinaryService {
-    String uploadFile(MultipartFile file) throws IOException;
+
+    List<Map<String, String>> uploadMutilFiles(MultipartFile[] files) throws IOException;
+//    Map<String, Object> deletedFile(String fileId) throws IOException;
 }

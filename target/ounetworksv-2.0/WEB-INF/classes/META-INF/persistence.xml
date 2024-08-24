@@ -4,5 +4,13 @@
   <persistence-unit name="my_persistence_unit">
     <class>com.ounetwork.models.User</class>
     <class>com.ounetwork.models.Role</class>
+    <class>com.ounetwork.models.Post</class>
+    <class>com.ounetwork.models.Comment</class>
+    <class>com.ounetwork.models.Reaction</class>
+    <class>com.ounetwork.models.Media</class>
+    <class>com.ounetwork.repositories.PostRepository</class>
+    <class>com.ounetwork.models.Profile</class>
+    <class>com.ounetwork.models.Major</class>
+    <class>com.ounetwork.models.Spec</class>
   </persistence-unit>
 </persistence>

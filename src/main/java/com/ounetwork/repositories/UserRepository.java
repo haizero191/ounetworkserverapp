@@ -6,6 +6,7 @@ package com.ounetwork.repositories;
 
 import java.util.List;
 import com.ounetwork.models.User;
+import com.ounetwork.models.Profile;
 /**
  *
  * @author Admin
@@ -16,6 +17,6 @@ public interface UserRepository {
     User findByStudentID(String studentID);
     User findById(String userId);
     User updateAvatar(String userId, String avatarUrl);
-
+    User updateProfile(Profile profile);
 }
  

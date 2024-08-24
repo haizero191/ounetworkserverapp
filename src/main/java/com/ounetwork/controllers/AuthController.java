@@ -12,28 +12,26 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.ounetwork.models.User;
-import com.ounetwork.models.Role;
 import com.ounetwork.services.RoleService;
 import com.ounetwork.services.ValidationService;
 import com.ounetwork.utils.JwtUtil;
-
 import com.ounetwork.utils.ResponsePackage;
 import com.ounetwork.validation.CustomException;
 import java.util.HashMap;
 import java.util.Map;
 import javax.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.PathVariable;
-
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -42,6 +40,8 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @RequestMapping("/api/v1/public/auth")
 public class AuthController {
+
+    private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
 
     @Autowired
     private UserService userService;
@@ -54,7 +54,8 @@ public class AuthController {
 
     @Autowired
     private JwtUtil jwtUtil;
-    
+
+    // AUTHENTICATION - TEST CONTROLLER
     @GetMapping("/test")
     @Transactional
     public ResponsePackage index() throws JsonProcessingException {
@@ -62,10 +63,11 @@ public class AuthController {
         return new ResponsePackage(true, users, "Get all user success !", null);
     }
 
+    
+    // AUTHENTICATION - REGISTER NEW USER
     @PostMapping("/register")
     @Transactional
     public ResponseEntity<ResponsePackage> register(@Valid @RequestBody User user, BindingResult bindingResult) {
-
         Map<String, String> errors = new HashMap<>();
 
         if (bindingResult.hasErrors()) {
@@ -94,34 +96,26 @@ public class AuthController {
         } catch (CustomException e) {
             return new ResponseEntity(new ResponsePackage(true, null, "Register failed !", e.getErrors()), HttpStatus.NOT_FOUND);
         }
-
     }
 
+    
+    // AUTHENTICATION - LOGIN USER
     @PostMapping(value = "/login", consumes = "application/json")
     @Transactional
     public ResponseEntity<ResponsePackage> login(@Valid @RequestBody Map<String, String> loginData) {
-
         String studentID = loginData.get("studentID");
         String password = loginData.get("password");
+        
+        User user = this.userService.login(studentID, password);
+        String role = user.getRole().getName();
+        boolean isApproved = user.getIsApproved();
 
-        try {
-            User user = userService.login(studentID, password);
-            String role = user.getRole().getName();
-            boolean isApproved = user.getIsApproved();
-            
-            String token = jwtUtil.generateToken(studentID, role, isApproved);
-            String username = jwtUtil.extractUsername(token);
-            String roleName = jwtUtil.extractRole(token);
-            
-            
-            Map<String, String> loginResponse = new HashMap<>();
-            loginResponse.put("userId", user.getId());
-            loginResponse.put("accessToken", token);
+        // Create Token
+        String token = jwtUtil.generateToken(studentID, role, isApproved);
+        Map<String, Object> loginResponse = new HashMap<>();
+        loginResponse.put("accessToken", token);
+        loginResponse.put("user", user);
 
-
-            return new ResponseEntity(new ResponsePackage(true, loginResponse, "Login success !", null), HttpStatus.OK);
-        } catch (CustomException e) {
-            return new ResponseEntity<>(new ResponsePackage(false, null, "Login failed !", e.getErrors()), HttpStatus.UNAUTHORIZED);
-        }
+        return new ResponseEntity(new ResponsePackage(true, loginResponse, "Login success !", null), HttpStatus.OK);
     }
 }
