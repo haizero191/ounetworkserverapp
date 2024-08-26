@@ -55,10 +55,6 @@ public class Media implements Serializable {
     @Column(name = "fileSize")
     private String fileSize;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ownerId")
-    private User owner;
-
     @ManyToOne
     @JoinColumn(name = "postId")
     @JsonIgnore
@@ -67,7 +63,6 @@ public class Media implements Serializable {
     @Column(name = "uploadedAt")
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime uploadedAt = LocalDateTime.now();
-
 
     @JsonView(View.Detailed.class)
     @Column(name = "width")

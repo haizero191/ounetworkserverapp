@@ -9,5 +9,7 @@ import com.ounetwork.models.Profile;
  * @author Admin
  */
 public interface ProfileRepository {
+    Profile findByStudentId(String studentID);
     Profile create(Profile profile);
+    Profile update(Profile profile);
 }

@@ -26,4 +26,17 @@ public class ProfileServiceImpl implements ProfileService {
     public Profile create(Profile profile) {
         return this.profileRepository.create(profile);
     }
+
+    @Override
+    @Transactional
+    public Profile updated(Profile profile) {
+        return this.profileRepository.update(profile);
+    }
+
+    @Override
+    @Transactional
+    public Profile getByStudentId(String studentID) {
+        return this.profileRepository.findByStudentId(studentID);
+    }
+
 }

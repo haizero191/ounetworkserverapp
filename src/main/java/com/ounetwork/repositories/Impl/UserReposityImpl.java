@@ -71,10 +71,5 @@ public class UserReposityImpl implements UserRepository {
                 .uniqueResult();
     }
 
-    // Update user profile
-    @Override
-    public User updateProfile(Profile profile) {
-        Session session = sessionFactory.getObject().getCurrentSession();
-        throw new UnsupportedOperationException("Not supported yet."); 
-    }
+    
 }

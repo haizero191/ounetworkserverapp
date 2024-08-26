@@ -11,4 +11,6 @@ import com.ounetwork.models.Profile;
  */
 public interface ProfileService {
     Profile create(Profile profile);
+    Profile updated(Profile profile);
+    Profile getByStudentId(String studentID);
 }

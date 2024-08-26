@@ -120,7 +120,6 @@ public class PostController {
                 newMedia.setHeight(file.get("height"));
 
                 newMedia.setPost(newPost);
-                newMedia.setOwner(userExist);
 
                 // Save media into database
                 this.mediaService.create(newMedia);

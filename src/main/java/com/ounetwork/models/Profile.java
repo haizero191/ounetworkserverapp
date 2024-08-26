@@ -53,7 +53,7 @@ public class Profile implements Serializable {
 
     @OneToOne
     @JoinColumn(name = "avatarId")
-    @JsonView(View.Summary.class)
+    @JsonView(View.Detailed.class)
     private Media avatar;
     
     @Column(name = "phone")

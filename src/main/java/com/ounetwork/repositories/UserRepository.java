@@ -17,6 +17,5 @@ public interface UserRepository {
     User findByStudentID(String studentID);
     User findById(String userId);
     User updateAvatar(String userId, String avatarUrl);
-    User updateProfile(Profile profile);
 }
  
