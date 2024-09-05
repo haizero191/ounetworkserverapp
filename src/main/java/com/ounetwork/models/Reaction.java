@@ -42,9 +42,8 @@ public class Reaction implements Serializable {
     @Column(name = "id")
     private String id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "postId")
-    private Post post;
+    @Column(name = "postId")
+    private String postId;
 
     @ManyToOne
     @JoinColumn(name = "userId")
@@ -61,6 +60,6 @@ public class Reaction implements Serializable {
     private LocalDateTime createdAt = LocalDateTime.now();
 
     public enum ReactionType {
-        LIKE, HAHA, LOVE
+        LIKE, HAHA, LOVE, THUNTHUN, SAD
     }
 }

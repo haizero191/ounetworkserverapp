@@ -2,6 +2,7 @@ D:\Github\ounetworkserverapp\src\main\java\com\ounetwork\configs\WebApplicationC
 D:\Github\ounetworkserverapp\src\main\java\com\ounetwork\repositories\Impl\MediaRepositoryImpl.java
 D:\Github\ounetworkserverapp\src\main\java\com\ounetwork\services\Impl\ProfileServiceImpl.java
 D:\Github\ounetworkserverapp\src\main\java\com\ounetwork\controllers\TestController.java
+D:\Github\ounetworkserverapp\src\main\java\com\ounetwork\repositories\CommentRepository.java
 D:\Github\ounetworkserverapp\src\main\java\com\ounetwork\repositories\Impl\SpecRepositoryImpl.java
 D:\Github\ounetworkserverapp\src\main\java\com\ounetwork\controllers\ReactionController.java
 D:\Github\ounetworkserverapp\src\main\java\com\ounetwork\repositories\PostRepository.java
@@ -34,6 +35,7 @@ D:\Github\ounetworkserverapp\src\main\java\com\ounetwork\models\Media.java
 D:\Github\ounetworkserverapp\src\main\java\com\ounetwork\services\RoleService.java
 D:\Github\ounetworkserverapp\src\main\java\com\ounetwork\repositories\UserRepository.java
 D:\Github\ounetworkserverapp\src\main\java\com\ounetwork\controllers\UploadController.java
+D:\Github\ounetworkserverapp\src\main\java\com\ounetwork\services\CommentService.java
 D:\Github\ounetworkserverapp\src\main\java\com\ounetwork\filter\JwtRequestFilter.java
 D:\Github\ounetworkserverapp\src\main\java\com\ounetwork\configs\JacksonConfig.java
 D:\Github\ounetworkserverapp\src\main\java\com\ounetwork\repositories\MediaRepository.java
@@ -57,6 +59,7 @@ D:\Github\ounetworkserverapp\src\main\java\com\ounetwork\services\ValidationServ
 D:\Github\ounetworkserverapp\src\main\java\com\ounetwork\services\ProfileService.java
 D:\Github\ounetworkserverapp\src\main\java\com\ounetwork\repositories\Impl\ValidationRepositoryImpl.java
 D:\Github\ounetworkserverapp\src\main\java\com\ounetwork\controllers\PostController.java
+D:\Github\ounetworkserverapp\src\main\java\com\ounetwork\services\Impl\CommentServiceImpl.java
 D:\Github\ounetworkserverapp\src\main\java\com\ounetwork\models\Spec.java
 D:\Github\ounetworkserverapp\src\main\java\com\ounetwork\services\Impl\SpecServiceImpl.java
 D:\Github\ounetworkserverapp\src\main\java\com\ounetwork\services\Impl\CloudinaryServiceImpl.java
@@ -65,6 +68,7 @@ D:\Github\ounetworkserverapp\src\main\java\com\ounetwork\services\Impl\PostServi
 D:\Github\ounetworkserverapp\src\main\java\com\ounetwork\services\Impl\ValidationServiceImpl.java
 D:\Github\ounetworkserverapp\src\main\java\com\ounetwork\configs\ValidationConfig.java
 D:\Github\ounetworkserverapp\src\main\java\com\ounetwork\models\Major.java
+D:\Github\ounetworkserverapp\src\main\java\com\ounetwork\repositories\Impl\CommentRepositoryImpl.java
 D:\Github\ounetworkserverapp\src\main\java\com\ounetwork\services\Impl\ReactionServiceImpl.java
 D:\Github\ounetworkserverapp\src\main\java\com\ounetwork\validation\CustomException.java
 D:\Github\ounetworkserverapp\src\main\java\com\ounetwork\repositories\Impl\ReactionRepositoryImpl.java

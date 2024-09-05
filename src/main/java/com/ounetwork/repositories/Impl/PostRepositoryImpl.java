@@ -49,10 +49,27 @@ public class PostRepositoryImpl implements PostRepository {
     @Override
     public Long getNumberReactionById(String postId) {
         Session session = sessionFactory.getObject().getCurrentSession();
-        String hql = "SELECT COUNT(r) FROM Reaction r WHERE r.post.id = :postId";
+        String hql = "SELECT COUNT(r) FROM Reaction r WHERE r.postId = :postId";
         Long reactionCounter = session.createQuery(hql, Long.class)
                 .setParameter("postId", postId)
                 .getSingleResult();
         return reactionCounter;
     }
+
+    @Override
+    public Long getNumberCommentById(String postId) {
+        Session session = sessionFactory.getObject().getCurrentSession();
+        String hql = "SELECT COUNT(r) FROM Comment r WHERE r.postId = :postId";
+        Long commentCounter = session.createQuery(hql, Long.class)
+                .setParameter("postId", postId)
+                .getSingleResult();
+        return commentCounter;
+    }
+
+    @Override
+    public Post findById(String postId) {
+        Session session = sessionFactory.getObject().getCurrentSession();
+        return session.get(Post.class, postId);
+    }
+
 }

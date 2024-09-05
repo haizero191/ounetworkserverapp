@@ -14,4 +14,8 @@ import com.ounetwork.models.Reaction;
  */
 public interface ReactionService {
     List<Reaction> getReactionFromPost(String postId);
+    Boolean reactionToPost(String reactorId, String postId, Reaction.ReactionType reactionType);
+    Reaction deleteById(String reactionId);
+    Boolean updateToPost(String reactorId, String postId, Reaction.ReactionType reactionType);
+    Reaction isUserInteracted(String reactorId, String postId); 
 }

@@ -69,6 +69,9 @@ public class Profile implements Serializable {
 
     @Column(name = "birthdate")
     private String birthdate;
+    
+    @Column(name = "status")
+    private String status = "BLANK";
 
     @Column(name = "createdAt")
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")

@@ -9,9 +9,13 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.ounetwork.models.Post;
 import com.ounetwork.models.User;
 import com.ounetwork.models.Media;
+import com.ounetwork.models.Reaction;
+import com.ounetwork.models.Comment;
 import com.ounetwork.services.CloudinaryService;
+import com.ounetwork.services.CommentService;
 import com.ounetwork.services.MediaService;
 import com.ounetwork.services.PostService;
+import com.ounetwork.services.ReactionService;
 import com.ounetwork.services.UserService;
 import com.ounetwork.utils.JwtUtil;
 import com.ounetwork.utils.ResponsePackage;
@@ -63,28 +67,58 @@ public class PostController {
     @Autowired
     private CloudinaryService cloudinaryService;
 
+    @Autowired
+    private ReactionService reactionService;
+
+    @Autowired
+    private CommentService commentService;
+
+    // ======================  GET ALL POST =========================== //
     @GetMapping("/get")
     @JsonView(View.Detailed.class)
-    public ResponseEntity<ResponsePackage> index() throws JsonProcessingException {
+    public ResponseEntity<ResponsePackage> index(
+            HttpServletRequest request
+    ) throws JsonProcessingException {
         List<Post> posts = this.postService.getAll();
+        String jwtToken = (String) request.getAttribute("jwtToken");
+        String studentId = jwtUtil.extractUsername(jwtToken);
+
         for (Post post : posts) {
+            User user = this.userService.getUserByStudentID(studentId);
+
+            // GET number reaction and comment
             Long postReactionCounter = this.postService.getNumberReactionById(post.getId());
+            Long postCommentCounter = this.postService.getNumberCommentById(post.getId());
+            Reaction UserInteractedPost = this.reactionService.isUserInteracted(user.getId(), post.getId());
+
+            // SET number reaction and comment
             post.setReactionNumber(postReactionCounter);
+            post.setCommentNumber(postCommentCounter);
+            if (UserInteractedPost != null) {
+                post.setIsUserInteracted(true);
+                post.setReactionType(UserInteractedPost.getReactionType().toString());
+                post.setUserInteraction(UserInteractedPost);
+            } else {
+                post.setIsUserInteracted(false);
+            }
         }
+
         return new ResponseEntity<ResponsePackage>(new ResponsePackage(true, posts, "Get all post success !", null), HttpStatus.OK);
     }
 
-    
-    // CREATE NEW POST
+    // ======================  CREATE NEW POST =========================== //
+    @PostMapping(
+            value = "/create",
+            consumes = "multipart/form-data",
+            produces = "application/json; charset=UTF-8"
+    )
     @CrossOrigin
     @PreAuthorize("hasAnyRole('ROLE_TEACHER', 'ROLE_ADMIN','ROLE_USER')")
-    @PostMapping(value = "/create", consumes = "multipart/form-data", produces = "application/json; charset=UTF-8")
     public ResponseEntity<ResponsePackage> create(
-        HttpServletRequest request,
-        @RequestParam("files") MultipartFile[] files,
-        @RequestParam("content") String content
+            HttpServletRequest request,
+            @RequestParam("files") MultipartFile[] files,
+            @RequestParam("content") String content
     ) throws JsonProcessingException {
-
         // Get JWT token and extract data
         String jwtToken = (String) request.getAttribute("jwtToken");
         String username = jwtUtil.extractUsername(jwtToken);
@@ -106,7 +140,7 @@ public class PostController {
             // Upload image to cloudinary
             List<Map<String, String>> uploadedFilesResult = new ArrayList<>();
             uploadedFilesResult = this.cloudinaryService.uploadMutilFiles(files);
-
+            List<Media> mediaListCreated = new ArrayList();
             // Create media with image upload 
             for (Map<String, String> file : uploadedFilesResult) {
                 // Create new media
@@ -118,18 +152,16 @@ public class PostController {
                 // Get width and height of media
                 newMedia.setWidth(file.get("width"));
                 newMedia.setHeight(file.get("height"));
-
                 newMedia.setPost(newPost);
 
                 // Save media into database
-                this.mediaService.create(newMedia);
-
-                logger.debug("Media created data: " + newMedia);
+                Media mediaUpdated = this.mediaService.create(newMedia);
+                mediaListCreated.add(mediaUpdated);
             }
-
+            // Add media list to new post
+            newPostCreatedResult.setMediaList(mediaListCreated);
             return new ResponseEntity(new ResponsePackage(true, newPostCreatedResult, "Create post success !", null), HttpStatus.OK);
         } catch (Exception e) {
-
             Map<String, String> errors = new HashMap<>();
             errors.put("error throw", e.getMessage());
             return new ResponseEntity(new ResponsePackage(false, null, "Create post failed ! ", errors), HttpStatus.OK);
@@ -137,11 +169,71 @@ public class PostController {
 
     }
 
-    
-    // DELETE POST BY ID
-    @PreAuthorize("hasAnyRole('ROLE_TEACHER', 'ROLE_ADMIN','ROLE_USER')")
+   
+    // ======================  DELETE POST ================================ //
     @DeleteMapping("/delete/{postId}")
+    @PreAuthorize("hasAnyRole('ROLE_TEACHER', 'ROLE_ADMIN','ROLE_USER')")
     public ResponseEntity<Void> deletePost(@PathVariable String postId) {
         return ResponseEntity.noContent().build();
+    }
+
+    // ======================  REACTION TO POST =========================== //
+    @PostMapping("/reaction/to/{postId}")
+    public ResponseEntity<ResponsePackage> reactionToPost(
+            HttpServletRequest request,
+            @PathVariable String postId,
+            @RequestParam(
+                    name = "reactionType",
+                    required = false,
+                    defaultValue = "LOVE"
+            ) Reaction.ReactionType reactionType
+    ) {
+        String jwtToken = (String) request.getAttribute("jwtToken");
+        String studentId = jwtUtil.extractUsername(jwtToken);
+        Map<String, String> result = new HashMap<String, String>();
+
+        // Handle reaction status
+        Boolean isReactionOrUnReaction = this.reactionService.reactionToPost(studentId, postId, reactionType);
+        if (isReactionOrUnReaction) {
+            result.put("status", "REACTION");
+        } else {
+            result.put("status", "UNREACTION");
+        }
+
+        // Add post id to reaction
+        result.put("postId", postId);
+        if (isReactionOrUnReaction) {
+            return new ResponseEntity(new ResponsePackage(true, result, "Reaction to post success !", null), HttpStatus.CREATED);
+        } else {
+            return new ResponseEntity(new ResponsePackage(true, result, "UnReaction to post !", null), HttpStatus.OK);
+        }
+    }
+
+    // ======================  COMMENT TO POST =========================== //
+    @PostMapping("/comment/to/{postId}")
+    @JsonView(View.Detailed.class)
+    public ResponseEntity<ResponsePackage> commentToPost(
+            HttpServletRequest request,
+            @PathVariable String postId,
+            @RequestParam(name = "content", required = true) String content
+    ) {
+        String jwtToken = (String) request.getAttribute("jwtToken");
+        String studentId = jwtUtil.extractUsername(jwtToken);
+        if (content == null) {
+            return new ResponseEntity(new ResponsePackage(true, null, "Must be content require !", null), HttpStatus.BAD_REQUEST);
+        }
+        Comment commentResult = this.commentService.commentToPost(studentId, postId, content);
+        return new ResponseEntity(new ResponsePackage(true, commentResult, "Comment to post success !", null), HttpStatus.OK);
+    }
+    
+    // ======================  GET ALL COMMENT OF POST =========================== //
+    @GetMapping("/comments/of/{postId}")
+    @CrossOrigin
+    @JsonView(View.Detailed.class)
+    public ResponseEntity<ResponsePackage> view(
+            @PathVariable String postId
+    ) {
+        List<Comment> commentList = this.commentService.getCommentFromPost(postId);
+        return new ResponseEntity(new ResponsePackage(true, commentList, "get comment of post success !", null), HttpStatus.OK);
     }
 }

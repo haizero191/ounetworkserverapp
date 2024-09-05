@@ -12,7 +12,14 @@ import java.util.List;
  * @author Admin
  */
 public interface PostService {
+
     List<Post> getAll();
+
     Post create(Post post);
+
     Long getNumberReactionById(String postId);
+
+    Long getNumberCommentById(String postId);
+
+    Post getPostById(String postId);
 }

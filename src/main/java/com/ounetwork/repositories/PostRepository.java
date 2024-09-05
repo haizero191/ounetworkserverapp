@@ -15,5 +15,7 @@ import org.springframework.data.jpa.repository.EntityGraph;
 public interface PostRepository {
     List<Post> getAll();
     Post create(Post post);
+    Post findById(String postId);
     Long getNumberReactionById(String postId);
+    Long getNumberCommentById(String postId);
 }

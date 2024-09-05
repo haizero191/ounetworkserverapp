@@ -4,16 +4,10 @@
  */
 package com.ounetwork.controllers;
 
-import com.fasterxml.jackson.annotation.JsonView;
-import com.ounetwork.models.User;
-import com.ounetwork.services.UserService;
-import com.ounetwork.views.View;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.ounetwork.models.Profile;

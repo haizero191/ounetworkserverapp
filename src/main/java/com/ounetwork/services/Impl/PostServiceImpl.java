@@ -37,9 +37,24 @@ public class PostServiceImpl implements PostService {
         return this.postRepository.create(post);
     }
 
+    // Get number of reaction
     @Override
     @Transactional
     public Long getNumberReactionById(String postId) {
         return this.postRepository.getNumberReactionById(postId);
     }
+    
+    // Get number of comment
+    @Override
+    @Transactional
+    public Long getNumberCommentById(String postId) {
+        return this.postRepository.getNumberCommentById(postId);
+    }
+
+    @Override
+    @Transactional
+    public Post getPostById(String postId) {
+        return this.postRepository.findById(postId);
+    }
+
 }

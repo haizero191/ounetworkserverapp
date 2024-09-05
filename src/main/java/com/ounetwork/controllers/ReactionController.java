@@ -12,27 +12,29 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.ounetwork.models.Reaction;
+import com.ounetwork.utils.JwtUtil;
 import com.ounetwork.views.View;
+
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 
 /**
  *
  * @author Admin
  */
-
 @RestController
 @RequestMapping("/api/v1/private/reactions")
 public class ReactionController {
-
     @Autowired
     private ReactionService reactionService;
+
+    @Autowired
+    private JwtUtil jwtUtil;
 
     @GetMapping("/getall/{postId}")
     @CrossOrigin
     @JsonView(View.Summary.class)
-    public List<Reaction> reactFromPost(@PathVariable String postId) {
+    public List<Reaction> getReactFromPost(@PathVariable String postId) {
         return this.reactionService.getReactionFromPost(postId);
     }
 }

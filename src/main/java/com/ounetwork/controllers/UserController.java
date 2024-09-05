@@ -71,6 +71,8 @@ public class UserController {
         User user = this.userService.getUserByStudentID(studentId);
         return user.getProfile();
     }
+    
+    
 
     @PostMapping(value = "/protected/users/profile/update", consumes = "multipart/form-data", produces = "application/json; charset=UTF-8")
     @Transactional

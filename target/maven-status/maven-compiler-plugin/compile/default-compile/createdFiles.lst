@@ -30,6 +30,7 @@ com\ounetwork\utils\JwtUtil.class
 com\ounetwork\repositories\RoleRepository.class
 com\ounetwork\services\Impl\RoleServiceImpl.class
 com\ounetwork\controllers\ProfileController.class
+com\ounetwork\repositories\CommentRepository.class
 com\ounetwork\services\Impl\ProfileServiceImpl.class
 com\ounetwork\services\Impl\ReactionServiceImpl.class
 com\ounetwork\controllers\UploadController.class
@@ -41,11 +42,14 @@ com\ounetwork\models\Major.class
 com\ounetwork\services\Impl\PostServiceImpl.class
 com\ounetwork\repositories\SpecRepository.class
 com\ounetwork\validation\GlobalExceptionHandler.class
+com\ounetwork\services\Impl\CommentServiceImpl.class
 com\ounetwork\configs\ValidationConfig.class
 com\ounetwork\repositories\Impl\RoleRepositoryImpl.class
+com\ounetwork\services\CommentService.class
 com\ounetwork\repositories\Impl\PostRepositoryImpl.class
 com\ounetwork\validation\validator\NumericValidator.class
 com\ounetwork\services\SpecService.class
+com\ounetwork\repositories\Impl\CommentRepositoryImpl.class
 com\ounetwork\services\ValidationService.class
 com\ounetwork\controllers\AuthController.class
 com\ounetwork\services\UserService.class

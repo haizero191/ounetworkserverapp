@@ -63,7 +63,6 @@ public class AuthController {
         return new ResponsePackage(true, users, "Get all user success !", null);
     }
 
-    
     // AUTHENTICATION - REGISTER NEW USER
     @PostMapping("/register")
     @Transactional
@@ -89,7 +88,6 @@ public class AuthController {
         if (!errors.isEmpty()) {
             throw new CustomException(errors);
         }
-
         try {
             User newUser = this.userService.register(user);
             return new ResponseEntity(new ResponsePackage(true, newUser, "Register new user success !", null), HttpStatus.CREATED);

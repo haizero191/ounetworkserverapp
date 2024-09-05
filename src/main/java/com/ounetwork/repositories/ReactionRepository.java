@@ -12,6 +12,18 @@ import com.ounetwork.models.Reaction;
  * @author Admin
  */
 public interface ReactionRepository {
+
     List<Reaction> getReactionFormPost(String postId);
+
+    Reaction create(Reaction reaction);
+
+    Reaction delete(String reactionId);
+
+    Reaction update(Reaction reaction);
+
+    Reaction findById(String reactionId);
+
+    Boolean deleteExist(String reactorId, String postId);
     
+    Reaction isExist(String reactorId, String postId);
 }

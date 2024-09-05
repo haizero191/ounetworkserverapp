@@ -53,10 +53,6 @@ public class Post implements Serializable {
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonView(View.Detailed.class)
     private List<Media> mediaList;
-    
-//    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
-//    @JsonView(View.Detailed.class)
-//    private List<Comment> commentList;
 
     @NotBlank(message = "Content isn't blank")
     @Column(name = "content")
@@ -72,10 +68,31 @@ public class Post implements Serializable {
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     @JsonView(View.Detailed.class)
     private LocalDateTime updatedAt = LocalDateTime.now();
-
+    
+    
+    
+    // Field Additional
+    @Transient // Tạo một trường không bền 
+    @JsonView(View.Detailed.class)
+    private Reaction userInteraction;
+    
     // Field Additional
     @Transient // Tạo một trường không bền 
     @JsonView(View.Detailed.class)
     private long reactionNumber = 0;
+    
+    // Field Additional
+    @Transient // Tạo một trường không bền 
+    @JsonView(View.Detailed.class)
+    private long commentNumber = 0;
+    
+    // Field Additional
+    @Transient // Tạo một trường không bền 
+    @JsonView(View.Detailed.class)
+    private String reactionType = "DEFAULT";
+
+    @Transient // Tạo một trường không bền 
+    @JsonView(View.Detailed.class)
+    private Boolean isUserInteracted = false;
 
 }

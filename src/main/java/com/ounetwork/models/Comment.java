@@ -5,6 +5,8 @@
 package com.ounetwork.models;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.ounetwork.views.View;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
@@ -31,24 +33,30 @@ import org.hibernate.annotations.GenericGenerator;
 @Getter
 @Setter
 public class Comment implements Serializable {
+
     @Id
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "uuid2")
     @Column(name = "id")
+    @JsonView(View.Summary.class)
     private String id;
-   
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "postId")
-    private Post post;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @Column(name = "postId")
+    @JsonView(View.Detailed.class)
+    private String postId;
+
+    @ManyToOne
     @JoinColumn(name = "userId")
+    @JsonView(View.Summary.class)
     private User user;
 
     @Column(name = "content", columnDefinition = "LONGTEXT")
+    @JsonView(View.Detailed.class)
     private String content;
 
     @Column(name = "createdAt")
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    @JsonView(View.Detailed.class)
     private LocalDateTime createdAt = LocalDateTime.now();
+
 }
